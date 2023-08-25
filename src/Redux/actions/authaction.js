@@ -1,22 +1,11 @@
 import axios from "axios";
-import { login_url, profile_url } from "./utils/endpoints";
-import { signup_url } from "./utils/endpoints";
+import { login_url, profile_url } from "../utils/endpoints";
+import { signup_url } from "../utils/endpoints";
 import { toast } from "react-hot-toast";
 
-/// LOGIN
-export const LOG_IN = "LOG_IN ";
-export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS ";
-export const LOG_IN_FAIL = " LOG_IN_FAIL";
+import { LOG_IN, LOG_IN_FAIL, LOG_IN_SUCCESS } from "./constant";
+import { SIGNUP, SIGNUP_FAILURE, SIGNUP_SUCCESS } from "./constant";
 
-////SIGNUP
-export const SIGNUP = "SIGNUP";
-export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
-export const SIGNUP_FAILURE = "SIGNUP_FAILURE";
-
-///PROFILE
-export const PROFILE = "PROFILE";
-export const PROFILE_SUCCESS = "PROFILE_SUCCESS";
-export const PROFILE_FAILURE = "PROFILE_FAILURE";
 
 ///Login
 
@@ -62,21 +51,3 @@ export const CreateAccount = (payload, callback) => async (dispatch) => {
   }
 };
 
-///Profile
-
-export const getProfile = () => async (dispatch) => {
-  dispatch({ type: "PROFILE" });
-  try {
-    const response = await axios.get(profile_url, {
-      headers: {
-        token: `${localStorage.getItem("AccessToken")}`,
-      },
-    });
-    const { password, ...profileDataWithoutPassword } = response.data;
-    console.log(response.data);
-    const profile = response.data;
-    dispatch({ type: PROFILE_SUCCESS, payload: profileDataWithoutPassword });
-  } catch (error) {
-    dispatch({ type: PROFILE_FAILURE });
-  }
-};

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { CreateAccount } from "../Redux/action";
+import { CreateAccount } from "../Redux/actions/authaction";
 import { toast } from "react-hot-toast";
 
 

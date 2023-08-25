@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProfile } from "../Redux/action";
+import { getProfile } from "../Redux/actions/profileAction";
 
 const Profile = () => {
   const dispatch = useDispatch();
   const profiledata = useSelector((state) => state?.getProfileReducer?.profile);
 
-  console.log("profiledata", profiledata);
+  // console.log("profiledata", profiledata);
 
   useEffect(() => {
     dispatch(getProfile());

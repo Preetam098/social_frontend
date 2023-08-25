@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { authLogin } from "../Redux/action";
+import { authLogin } from "../Redux/actions/authaction";
 import { useNavigate } from "react-router-dom";
 import SimpleReactValidator from "simple-react-validator";
 
