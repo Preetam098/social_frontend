@@ -7,8 +7,10 @@ import { addPost } from "../Redux/actions/postAction";
 import Men from "../Assets/men.jpg";
 import { getPost } from "../Redux/actions/postAction";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-hot-toast";
+import { ToastContainer, toast } from "react-toast";
 import { BASEURL } from "../Redux/utils/endpoints";
+import Dropdown from "../Components/Dropdown";
+
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -31,10 +33,9 @@ const Dashboard = () => {
     }));
     if (files) {
       setSelectedImage(URL.createObjectURL(files[0]));
+      console.log(name);
     }
   };
-
- 
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -44,7 +45,12 @@ const Dashboard = () => {
     payload.append("description", postData.description);
     dispatch(
       addPost(payload, () => {
-        toast.success("Post Done");
+        toast.success("upload successfully!");
+        setpostData({
+          title: "", 
+          file: null, 
+          description: "" 
+        });
       })
     );
   };
@@ -67,7 +73,7 @@ const Dashboard = () => {
             {/* CENTER */}
 
             <div className="w-full md:w-5/12 h-full md:my-0 my-1 mx-4">
-              <div className="bg-white p-5 shadow-sm rounded-sm ">
+              <div className="bg-white p-5 shadow-sm rounded-lg ">
                 <div className="flex items-center space-x-2 py-2 font-semibold text-gray-900 ">
                   <span clas="text-green-500">
                     <svg
@@ -76,7 +82,7 @@ const Dashboard = () => {
                       viewBox="0 0 24 24"
                       stroke-width="1.5"
                       stroke="currentColor"
-                      class="w-6 h-6"
+                      class="w-6 h-6 text-blue-700"
                     >
                       <path
                         stroke-linecap="round"
@@ -94,17 +100,17 @@ const Dashboard = () => {
                         type="text"
                         name="title"
                         placeholder="title"
-                        className="border-2 rounded-xl border-gray-400 w-full p-2"
+                        className="border-2 rounded-xl border-gray-300 active:borde w-full p-2"
                         value={postData.title}
                         onChange={handleInputChange}
                       />
                     </div>
                     <div className="">
                       <textarea
-                        className="border-2 rounded-xl border-gray-400 w-full p-2"
+                        className="border-2 rounded-xl border-gray-300 w-full p-2"
                         id="description"
                         name="description"
-                        rows="6"
+                        rows="4"
                         cols="50"
                         value={postData.description}
                         onChange={handleInputChange}
@@ -112,15 +118,15 @@ const Dashboard = () => {
                       ></textarea>
                     </div>
 
-                    <div>
+                    {/* <div>
                       <input
                         type="file"
                         accept="image/*"
                         name="file" // Add this line to provide a name for the input
-                        style={{ display: "" }}
+                        class="block "
                         onChange={handleInputChange}
                       />
-                    </div>
+                    </div> */}
 
                     <div className="flex justify-evenly items-center my-1 flex-wrap">
                       <button className="justify-center text-xs sm:text-sm flex items-center  cursor-pointer tracking-wider p-1.5 sm:px-4 rounded text-gray-500 font-bold ">
@@ -141,8 +147,15 @@ const Dashboard = () => {
                         </span>
                         Live Video
                       </button>
-
-                      <button className="justify-center text-xs sm:text-sm flex items-center cursor-pointer tracking-wider p-1.5 sm:px-4 rounded text-gray-500 font-bold">
+                      <div className=" justify-center text-xs sm:text-sm flex items-center  cursor-pointer tracking-wider rounded text-gray-500 font-bold ">
+                        <input
+                          type="file"
+                          name="file"
+                          accept="image/*"
+                          onChange={handleInputChange}
+                          id="upload"
+                          hidden
+                        />
                         <span>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -159,8 +172,13 @@ const Dashboard = () => {
                             />
                           </svg>
                         </span>
-                        Photos / Videos
-                      </button>
+                        <label
+                          for="upload"
+                          className="inline bg-white text-gray-500 text-xs sm:text-sm cursor-pointer tracking-wider rounded font-bold "
+                        >
+                          Photos / Videos
+                        </label>
+                      </div>
 
                       <button className=" justify-center text-xs sm:text-sm flex items-center  cursor-pointer tracking-wider p-1.5 sm:px-4 rounded text-gray-500 font-bold ">
                         <span>
@@ -208,8 +226,9 @@ const Dashboard = () => {
                   {posts.map((item) => {
                     return (
                       <div className="p-4 bg-white my-1">
-                        <div className="flex items-center space-x-2 font-semibold  mb-2">
-                          <img
+                        <div className="flex items-start justify-between space-x-2 font-semibold  mb-2">
+                        <div>
+                        <img
                             src={Men}
                             className="w-10 rounded-full h-10"
                           ></img>
@@ -218,6 +237,11 @@ const Dashboard = () => {
                               Surfiya Zakir
                             </h3>
                             <p className="text-sm text-gray-500">3 hour ago</p>
+
+                          </div>
+                          </div>
+                          <div>
+                          <Dropdown/>
                           </div>
                         </div>
 
@@ -234,7 +258,10 @@ const Dashboard = () => {
                         {/* Image */}
 
                         <div>
-                          <img src={`${BASEURL}${item.attachment}`} className="w-full ">
+                          <img
+                            src={`${BASEURL}${item.attachment}`}
+                            className="w-full "
+                          >
                             {/* "http://localhost:5000/uploads/1692945142226-download (2).jpg" =   for image  */}
                           </img>
                         </div>
@@ -316,6 +343,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };

@@ -1,4 +1,8 @@
 import { Fragment, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+
+
+
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
 import {
   ArrowPathIcon,
@@ -27,8 +31,17 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
+
+
 export default function Example() {
+  const navigate =useNavigate()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  const handleLogout =()=>{
+    localStorage.removeItem("AccessToken")
+    localStorage.removeItem("social_app")
+    navigate('/')
+  }
 
   return (
     <header className="bg-white">
@@ -111,7 +124,7 @@ export default function Example() {
             Company
           </a>
         </Popover.Group>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end" onClick={handleLogout}>
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
             Log Out <span aria-hidden="true">&rarr;</span>
           </a>

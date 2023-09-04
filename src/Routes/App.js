@@ -11,25 +11,28 @@ import Navbar from "../Pages/Navbar";
 const App = () => {
   return (
     <>
-      {/* <Suspense
+      <Suspense
         fallback={
           <div className="h-screen w-full flex justify-center items-center">
             <img src="" className="w-44" alt="loader" />
           </div>
         }
       >
-        <Toaster /> */}
+        <Toaster />
         
           <div>
-          <Navbar />
+        
+                      <Navbar />
+                     
             <Routes>
+
               {AllRoutes.map((item) => {
                 return (
                 <>
                   <Route
                     exact
                     element={item.private ? <Private /> : <Public />}>
-
+                    
                     <Route
                       name={item.name}
                       exact={true}
@@ -44,7 +47,7 @@ const App = () => {
             </Routes>
           </div>
        
-      {/* </Suspense> */}
+      </Suspense>
     </>
   );
 };
