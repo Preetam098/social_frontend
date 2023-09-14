@@ -22,7 +22,7 @@ const AllRoutes = [
     element: <Signup />,
     private: false,
   },
-
+ 
   {
     name: "Dashboard",
     path: "/dashboard",

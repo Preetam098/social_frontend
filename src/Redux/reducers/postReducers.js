@@ -8,6 +8,9 @@ import {
   UPDATE_POST,
   UPDATE_POST_SUCCESS,
   UPDATE_POST_FAILURE,
+  DELETE_POST,
+  DELETE_POST_SUCCESS,
+  DELETE_POST_FAILURE,
 } from "../actions/constant";
 
 const initialState = {
@@ -67,6 +70,20 @@ export const updatePostReducer = (state = initialState, action) => {
     case UPDATE_POST_SUCCESS:
       return { ...state, loading: false };
     case UPDATE_POST_FAILURE:
+      return { ...state, loading: false };
+    default:
+      return state;
+  }
+};
+
+export const deletePostReducer = (state = initialState, action) => {
+  switch (action.type) {
+       // DELETE POST
+    case DELETE_POST:
+      return { ...state, loading: true };
+    case DELETE_POST_SUCCESS:
+      return { ...state, loading: false };
+    case DELETE_POST_FAILURE:
       return { ...state, loading: false };
     default:
       return state;

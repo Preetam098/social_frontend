@@ -1,29 +1,34 @@
-import { Menu, Transition } from '@headlessui/react'
-import { Fragment, useEffect, useRef, useState } from 'react'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
-import { Modal } from './Modal'
+import { Menu, Transition } from "@headlessui/react";
+import { Fragment, useEffect, useRef, useState } from "react";
+import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import { Modal } from "./Modal";
 
-const Dropdown =({ handleEdit  }) => {
-  const [open, setOpen] = useState(false)
+const Dropdown = ({ handleEdit, handleDelete }) => {
+  const [open, setOpen] = useState(false);
 
-const handleOpen = ()=>{
-  setOpen(true)
-}
-
-const handleClose = ()=>{
-  setOpen(false)
-}
-
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <div className="  text-right">
       <Menu as="div" className="relative inline-block text-left">
         <div>
           <Menu.Button className="inline-flex w-full justify-center rounded-full bg-gray-200 px-2 py-2 text-sm font-medium text-black over:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
-</svg>
-
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z"
+              />
+            </svg>
           </Menu.Button>
         </div>
         <Transition
@@ -40,11 +45,9 @@ const handleClose = ()=>{
               <Menu.Item>
                 {({ active }) => (
                   <button
-                  onClick={handleEdit
-                  
-                  }
+                    onClick={handleEdit}
                     className={`${
-                      active ? 'bg-gray-100 text-blue' : 'text-gray-900'
+                      active ? "bg-gray-100 text-blue" : "text-gray-900"
                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                   >
                     {active ? (
@@ -56,23 +59,20 @@ const handleClose = ()=>{
                       <EditInactiveIcon
                         className="mr-2 h-5 w-5"
                         aria-hidden="true"
-                        
                       />
                     )}
-                   Edit
+                    Edit
                   </button>
                 )}
               </Menu.Item>
-           
-
-
             </div>
             <div className="px-1 py-1">
               <Menu.Item>
                 {({ active }) => (
                   <button
+                    onClick={handleDelete}
                     className={`${
-                      active ? 'bg-blue-300 text-black' : 'text-gray-900'
+                      active ? "bg-blue-300 text-black" : "text-gray-900"
                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                   >
                     {active ? (
@@ -94,10 +94,10 @@ const handleClose = ()=>{
           </Menu.Items>
         </Transition>
       </Menu>
-      <Modal open={open} handleClose={handleClose}/>
+      <Modal open={open} handleClose={handleClose} />
     </div>
-  )
-}
+  );
+};
 
 function EditInactiveIcon(props) {
   return (
@@ -114,7 +114,7 @@ function EditInactiveIcon(props) {
         strokeWidth="2"
       />
     </svg>
-  )
+  );
 }
 
 function EditActiveIcon(props) {
@@ -132,7 +132,7 @@ function EditActiveIcon(props) {
         strokeWidth="2"
       />
     </svg>
-  )
+  );
 }
 
 function DeleteInactiveIcon(props) {
@@ -155,7 +155,7 @@ function DeleteInactiveIcon(props) {
       <path d="M3 6H17" stroke="#849dc7" strokeWidth="2" />
       <path d="M8 6V4H12V6" stroke="#849dc7" strokeWidth="2" />
     </svg>
-  )
+  );
 }
 
 function DeleteActiveIcon(props) {
@@ -178,8 +178,7 @@ function DeleteActiveIcon(props) {
       <path d="M3 6H17" stroke="#105ddf" strokeWidth="2" />
       <path d="M8 6V4H12V6" stroke="#105ddf" strokeWidth="2" />
     </svg>
-  )
+  );
 }
 
-
-export default Dropdown
+export default Dropdown;

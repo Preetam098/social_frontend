@@ -1,12 +1,20 @@
 import React, { Suspense } from "react";
+
 import AllRoutes from "./AllRoutes";
 import Private from "./Private";
 import Public from "./Public";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Navbar from "../Pages/Navbar";
+import Dashboard from "../Pages/Dashboard";
 
 const App = () => {
+  const { pathname } = useLocation();
+  const some = ["/navbar",];
+  const isShow = some.includes(pathname);
+
+
+
   return (
     <>
       <Suspense
@@ -17,18 +25,18 @@ const App = () => {
         }
       >
         <Toaster />
-        
-          <div>
-            <Routes>
-
-
-              {AllRoutes.map((item) => {
-                return (
+<Navbar/>
+        <div>
+      {/* <Navbar />  */}
+          <Routes>
+            {AllRoutes.map((item) => {
+              return (
                 <>
-            <Route path="*" element={<Navbar /> } />
+                
                   <Route
                     exact
-                    element={item.private ? <Private /> : <Public />}>
+                    element={item.private ? <Private /> : <Public />}
+                  >
                     <Route
                       name={item.name}
                       exact={true}
@@ -37,12 +45,11 @@ const App = () => {
                     />
                   </Route>
                 </>
-                );
-              })}
-              {/* <Route path="*" element={<NotFound />} /> */}
-            </Routes>
-          </div>
-       
+              );
+            })}
+            {/* <Route path="*" element={<NotFound />} /> */}
+          </Routes>
+        </div>
       </Suspense>
     </>
   );

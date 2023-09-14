@@ -8,7 +8,7 @@ import { BASEURL } from "../Redux/utils/endpoints";
 import { useDispatch, useSelector } from "react-redux";
 import Dropdown from "../Components/Dropdown";
 import { Modal } from "../Components/Modal";
-import { addPost, updatePost } from "../Redux/actions/postAction";
+import { addPost, updatePost , deletePost } from "../Redux/actions/postAction";
 import { getPost } from "../Redux/actions/postAction";
 
 const Dashboard = () => {
@@ -24,6 +24,12 @@ const Dashboard = () => {
     file: null,
   });
 
+  // console.log(postData.file.name);
+
+  const handleDelete = (postId) => {
+    dispatch(deletePost(postId));
+  };
+
   const handleInputChange = (event) => {
     const { name, value, files } = event.target;
     setpostData((prevData) => ({
@@ -36,21 +42,26 @@ const Dashboard = () => {
     }
   };
 
-
-  const handleSubmit = (event, ) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
+
+    // Check if the required fields are filled
+    if (!postData.title  || !postData.description) {
+      toast.error("Please fill in all required fields.");
+      return; // Exit the function without dispatching the action
+    }
     const payload = new FormData();
     payload.append("title", postData.title);
     payload.append("file", postData.file);
     payload.append("description", postData.description);
+
     if (isUpdate) {
-      dispatch(updatePost(payload))
+      dispatch(updatePost(payload ,postData._id ,  ))
         .then(() => {
-          toast.success("Update successful!");
-          setpostData({
-            title: "",
+          updatePost({
+            title: '',
             file: null,
-            description: "",
+            description:'',
           });
         })
         .catch((error) => {
@@ -71,6 +82,10 @@ const Dashboard = () => {
           toast.error("Post failed: " + error.message);
         });
     }
+  };
+
+  const handleRemoveImage = () => {
+    setpostData({...postData , file:null})
   };
 
   useEffect(() => {
@@ -123,6 +138,7 @@ const Dashboard = () => {
                         onChange={handleInputChange}
                       />
                     </div>
+
                     <div className="">
                       <textarea
                         className="border-2 rounded-xl border-gray-300 w-full p-2"
@@ -135,6 +151,60 @@ const Dashboard = () => {
                         placeholder="What's on your mind?"
                       ></textarea>
                     </div>
+
+                    {/* <!-- Photo Upload Field --> */}
+                    <div className="flex gap-2 items-center ">
+                      <button className=" bg-green-700 rounded-xl my-2 p-2  h-10 w-44 justify-start text-xs sm:text-sm flex items-center  cursor-pointer tracking-wider text-gray-500 font-bold ">
+                        <input
+                          type="file"
+                          name="file"
+                          accept="image/*"
+                          onChange={handleInputChange}
+                          id="upload"
+                          hidden
+                        />
+                        <span>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="1.5"
+                            stroke="currentColor"
+                            className="w-6 h-6  text-green-500"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+                            />
+                          </svg>
+                        </span>
+
+                        <label
+                          for="upload"
+                          className="inline px-2 text-white text-xs sm:text-sm cursor-pointer tracking-wider rounded font-bold "
+                        >
+                          Photos / Videos
+                        </label>
+                      </button>
+
+                      {postData && postData.file && (
+                        <>
+                          <div className=" flex gap-2 p-2">
+                            <h1 className="text-lg font-semibold">
+                              {postData.file.name}{" "}
+                            </h1>
+                            <button
+                              onClick={handleRemoveImage}
+                              className="bg-black m-1 w-4 h-6 text-white shadow-lg"
+                            >
+                              X
+                            </button>
+                          </div>
+                        </>
+                      )}
+                    </div>
+
                     <div className="flex justify-evenly items-center my-1 flex-wrap">
                       <button className="justify-center text-xs sm:text-sm flex items-center  cursor-pointer tracking-wider p-1.5 sm:px-4 rounded text-gray-500 font-bold ">
                         <span>
@@ -154,38 +224,6 @@ const Dashboard = () => {
                         </span>
                         Live Video
                       </button>
-                      <div className=" justify-center text-xs sm:text-sm flex items-center  cursor-pointer tracking-wider rounded text-gray-500 font-bold ">
-                        <input
-                          type="file"
-                          name="file"
-                          accept="image/*"
-                          onChange={handleInputChange}
-                          id="upload"
-                          hidden
-                        />
-                        <span>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
-                            className="w-6 h-6 text-green-500"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
-                            />
-                          </svg>
-                        </span>
-                        <label
-                          for="upload"
-                          className="inline bg-white text-gray-500 text-xs sm:text-sm cursor-pointer tracking-wider rounded font-bold "
-                        >
-                          Photos / Videos
-                        </label>
-                      </div>
 
                       <button className=" justify-center text-xs sm:text-sm flex items-center  cursor-pointer tracking-wider p-1.5 sm:px-4 rounded text-gray-500 font-bold ">
                         <span>
@@ -254,6 +292,7 @@ const Dashboard = () => {
                                 setisUpdate(true);
                                 setpostData(item);
                               }}
+                              handleDelete={()=>handleDelete(item._id)}                           
                             />
                           </div>
                         </div>
