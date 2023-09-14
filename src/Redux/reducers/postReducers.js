@@ -2,11 +2,12 @@ import {
   GET_POST,
   GET_POST_SUCCESS,
   GET_POST_FAILURE,
-} from "../actions/constant";
-import {
   ADD_POST,
   ADD_POST_SUCCESS,
   ADD_POST_FAILURE,
+  UPDATE_POST,
+  UPDATE_POST_SUCCESS,
+  UPDATE_POST_FAILURE,
 } from "../actions/constant";
 
 const initialState = {
@@ -30,10 +31,11 @@ export const addPostReducer = (state = initialState, action) => {
   }
 };
 
-//Get posts
-
 export const getPostReducer = (state = initialState, action) => {
   switch (action.type) {
+
+    /////// GET POST ////////
+
     case GET_POST:
       return { ...state, loading: true };
     case GET_POST_SUCCESS:
@@ -43,6 +45,28 @@ export const getPostReducer = (state = initialState, action) => {
         loading: true,
       };
     case GET_POST_FAILURE:
+      return { ...state, loading: false };
+
+       // UPDATE GAME & GAME TYPE
+    case UPDATE_POST:
+      return { ...state, loading: true };
+    case UPDATE_POST_SUCCESS:
+      return { ...state, loading: false };
+    case UPDATE_POST_FAILURE:
+      return { ...state, loading: false };
+    default:
+      return state;
+  }
+};
+
+export const updatePostReducer = (state = initialState, action) => {
+  switch (action.type) {
+       // UPDATE GAME & GAME TYPE
+    case UPDATE_POST:
+      return { ...state, loading: true };
+    case UPDATE_POST_SUCCESS:
+      return { ...state, loading: false };
+    case UPDATE_POST_FAILURE:
       return { ...state, loading: false };
     default:
       return state;

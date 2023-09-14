@@ -3,9 +3,7 @@ import AllRoutes from "./AllRoutes";
 import Private from "./Private";
 import Public from "./Public";
 import { Route, Routes } from "react-router-dom";
-import { BrowserRouter } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import NotFound from "../Pages/NotFound";
 import Navbar from "../Pages/Navbar";
 
 const App = () => {
@@ -21,18 +19,16 @@ const App = () => {
         <Toaster />
         
           <div>
-        
-                      <Navbar />
-                     
             <Routes>
+
 
               {AllRoutes.map((item) => {
                 return (
                 <>
+            <Route path="*" element={<Navbar /> } />
                   <Route
                     exact
                     element={item.private ? <Private /> : <Public />}>
-                    
                     <Route
                       name={item.name}
                       exact={true}

@@ -1,8 +1,20 @@
 import { Menu, Transition } from '@headlessui/react'
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import { Modal } from './Modal'
 
-const Dropdown =() => {
+const Dropdown =({ handleEdit  }) => {
+  const [open, setOpen] = useState(false)
+
+const handleOpen = ()=>{
+  setOpen(true)
+}
+
+const handleClose = ()=>{
+  setOpen(false)
+}
+
+
   return (
     <div className="  text-right">
       <Menu as="div" className="relative inline-block text-left">
@@ -28,6 +40,9 @@ const Dropdown =() => {
               <Menu.Item>
                 {({ active }) => (
                   <button
+                  onClick={handleEdit
+                  
+                  }
                     className={`${
                       active ? 'bg-gray-100 text-blue' : 'text-gray-900'
                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
@@ -41,12 +56,16 @@ const Dropdown =() => {
                       <EditInactiveIcon
                         className="mr-2 h-5 w-5"
                         aria-hidden="true"
+                        
                       />
                     )}
-                    Edit
+                   Edit
                   </button>
                 )}
               </Menu.Item>
+           
+
+
             </div>
             <div className="px-1 py-1">
               <Menu.Item>
@@ -75,6 +94,7 @@ const Dropdown =() => {
           </Menu.Items>
         </Transition>
       </Menu>
+      <Modal open={open} handleClose={handleClose}/>
     </div>
   )
 }

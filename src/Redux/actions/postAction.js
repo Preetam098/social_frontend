@@ -5,8 +5,17 @@ import { add_post_url } from "../utils/endpoints";
 import { update_post_url } from "../utils/endpoints";
 import { delete_post_url } from "../utils/endpoints";
 
-import { GET_POST, GET_POST_SUCCESS, GET_POST_FAILURE } from "./constant";
-import { ADD_POST, ADD_POST_SUCCESS, ADD_POST_FAILURE } from "./constant";
+import {
+  GET_POST,
+  GET_POST_SUCCESS,
+  GET_POST_FAILURE,
+  ADD_POST,
+  ADD_POST_SUCCESS,
+  ADD_POST_FAILURE,
+  UPDATE_POST,
+  UPDATE_POST_FAILURE,
+  UPDATE_POST_SUCCESS,
+} from "./constant";
 
 //// ADD POST ////
 
@@ -41,3 +50,29 @@ export const getPost = () => async (dispatch) => {
     dispatch({ type: GET_POST_FAILURE });
   }
 };
+
+//UPDATE POST
+
+export const updatePost = (postId, payload, callBack) => async (dispatch) => {
+  dispatch({ type: UPDATE_POST });
+  try {
+    const response = await axios.put(
+      `${update_post_url}/${postId} `,
+      payload,
+      {
+        headers: {
+          token: `${localStorage.getItem("AccessToken")}`,
+        },
+      }
+    );
+    const { message } = response.data;
+    const updatedPost = response.data;
+    console.log("updatePost" , updatePost)
+    dispatch({ type: UPDATE_POST_SUCCESS, payload: updatedPost });
+    toast.success(message);
+    callBack();
+  } catch (error) {
+    dispatch({ type: UPDATE_POST_FAILURE, payload: error.message });
+  }
+};
+

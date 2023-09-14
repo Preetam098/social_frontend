@@ -1,24 +1,23 @@
 import React, { useEffect, useState } from "react";
 import SideNav from "./SideNav";
 import RightNav from "./RightNav";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { addPost } from "../Redux/actions/postAction";
 import Men from "../Assets/men.jpg";
-import { getPost } from "../Redux/actions/postAction";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toast";
 import { BASEURL } from "../Redux/utils/endpoints";
+import { useDispatch, useSelector } from "react-redux";
 import Dropdown from "../Components/Dropdown";
-
+import { Modal } from "../Components/Modal";
+import { addPost, updatePost } from "../Redux/actions/postAction";
+import { getPost } from "../Redux/actions/postAction";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const { posts } = useSelector((state) => state?.getPostReducer);
-
   const [selectedImage, setSelectedImage] = useState(null);
+  const [editData, setEditData] = useState("");
+  const [isUpdate, setisUpdate] = useState(false);
   const [postData, setpostData] = useState({
     title: "",
     description: "",
@@ -31,28 +30,47 @@ const Dashboard = () => {
       ...prevData,
       [name]: files ? files[0] : value,
     }));
+
     if (files) {
       setSelectedImage(URL.createObjectURL(files[0]));
-      console.log(name);
     }
   };
 
-  const handleSubmit = (event) => {
+
+  const handleSubmit = (event, ) => {
     event.preventDefault();
     const payload = new FormData();
     payload.append("title", postData.title);
     payload.append("file", postData.file);
     payload.append("description", postData.description);
-    dispatch(
-      addPost(payload, () => {
-        toast.success("upload successfully!");
-        setpostData({
-          title: "", 
-          file: null, 
-          description: "" 
+    if (isUpdate) {
+      dispatch(updatePost(payload))
+        .then(() => {
+          toast.success("Update successful!");
+          setpostData({
+            title: "",
+            file: null,
+            description: "",
+          });
+        })
+        .catch((error) => {
+          toast.error("Update failed: " + error.message);
         });
-      })
-    );
+    } else {
+      dispatch(addPost(payload))
+        .then(() => {
+          toast.success("Post successful!");
+          setisUpdate(false);
+          setpostData({
+            title: "",
+            file: null,
+            description: "",
+          });
+        })
+        .catch((error) => {
+          toast.error("Post failed: " + error.message);
+        });
+    }
   };
 
   useEffect(() => {
@@ -117,17 +135,6 @@ const Dashboard = () => {
                         placeholder="What's on your mind?"
                       ></textarea>
                     </div>
-
-                    {/* <div>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        name="file" // Add this line to provide a name for the input
-                        class="block "
-                        onChange={handleInputChange}
-                      />
-                    </div> */}
-
                     <div className="flex justify-evenly items-center my-1 flex-wrap">
                       <button className="justify-center text-xs sm:text-sm flex items-center  cursor-pointer tracking-wider p-1.5 sm:px-4 rounded text-gray-500 font-bold ">
                         <span>
@@ -227,21 +234,27 @@ const Dashboard = () => {
                     return (
                       <div className="p-4 bg-white my-1">
                         <div className="flex items-start justify-between space-x-2 font-semibold  mb-2">
-                        <div>
-                        <img
-                            src={Men}
-                            className="w-10 rounded-full h-10"
-                          ></img>
                           <div>
-                            <h3 className="m-0 p-0 text-gray-900 ">
-                              Surfiya Zakir
-                            </h3>
-                            <p className="text-sm text-gray-500">3 hour ago</p>
-
-                          </div>
+                            <img
+                              src={Men}
+                              className="w-10 rounded-full h-10"
+                            ></img>
+                            <div>
+                              <h3 className="m-0 p-0 text-gray-900 ">
+                                Surfiya Zakir
+                              </h3>
+                              <p className="text-sm text-gray-500">
+                                3 hour ago
+                              </p>
+                            </div>
                           </div>
                           <div>
-                          <Dropdown/>
+                            <Dropdown
+                              handleEdit={() => {
+                                setisUpdate(true);
+                                setpostData(item);
+                              }}
+                            />
                           </div>
                         </div>
 
@@ -334,6 +347,7 @@ const Dashboard = () => {
                   })}
                 </div>
               </div>
+
               {/* <!-- End of profile tab --> */}
             </div>
 

@@ -4,6 +4,8 @@ import signReducer from '../reducers/signReducers'
 import getProfileReducer from '../reducers/profileReducers'
 import {getPostReducer} from "../reducers/postReducers"; 
 import {addPostReducer} from '../reducers/postReducers'
+import {updatePostReducer} from "../reducers/postReducers"; 
+
 
 const rootReducer = combineReducers({
     authReducer,
@@ -11,6 +13,7 @@ const rootReducer = combineReducers({
     getProfileReducer,
     addPostReducer,
     getPostReducer,
+    updatePostReducer,
   });
   
 export default rootReducer;
